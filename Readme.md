@@ -11,4 +11,4 @@ Default list is the french list of towns, which provides quite hilarious results
 
 ### Example
 
-![example]("/example.png")
+![example](example.png)
