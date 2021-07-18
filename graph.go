@@ -125,7 +125,7 @@ func initializeGraph(names []string) *Graph {
 		// level 3: trigrams
 		prev = "^" + string([]rune(name)[0]) + string([]rune(name)[1])
 		for i, r := range name + "." {
-			// skip first
+			// skip first two
 			if i < 2 {
 				continue
 			}
