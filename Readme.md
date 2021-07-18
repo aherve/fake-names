@@ -6,5 +6,9 @@ Default list is the french list of towns, which provides quite hilarious results
 
 ### Usage
 
-- With docker: run `docker run -t aherve/fake-names g 10` or `docker run -t aherve/fake-names -h`
+- With docker: run `docker run -t aherve/fake-names g -n 10` or `docker run -t aherve/fake-names -h`
 - Build it yourself: build and run using `go`
+
+### Example
+
+![example]("./example.png")
