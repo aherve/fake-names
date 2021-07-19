@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fake-names/graph"
 	"fmt"
 	"log"
 	"math/rand"
@@ -50,9 +51,9 @@ func main() {
 				} else {
 					names = frenchTownNames
 				}
-				g := initializeGraph(names)
+				g := graph.InitializeGraph(names)
 				for i := 0; i < genNumber; i++ {
-					fmt.Println(g.generateName())
+					fmt.Println(g.GenerateName())
 				}
 				return nil
 			},
