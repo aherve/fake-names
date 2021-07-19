@@ -1,4 +1,4 @@
-module communes
+module fake-names
 
 go 1.13
 

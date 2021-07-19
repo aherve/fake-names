@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"fake-names/graph"
 	"fmt"
 	"log"
 	"math/rand"
@@ -21,7 +22,7 @@ func main() {
 	var filename string
 
 	app := cli.NewApp()
-	app.Name = "Communes"
+	app.Name = "Fake-names"
 	app.Usage = "Generate fake french town names"
 	app.Description = "Read a list of names, and generate fake new ones that resemble the existing names"
 	app.Commands = []cli.Command{
@@ -34,7 +35,7 @@ func main() {
 					Name:        "input, i",
 					Usage:       "provide an input csv of names to build the graph with",
 					Destination: &filename,
-					Value:       "./names.csv",
+					Value:       "",
 				},
 				cli.IntFlag{
 					Name:        "number, n",
@@ -44,10 +45,15 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				names := readNames(filename)
-				g := initializeGraph(names)
+				var names []string
+				if filename != "" {
+					names = readNames(filename)
+				} else {
+					names = frenchTownNames
+				}
+				g := graph.InitializeGraph(names)
 				for i := 0; i < genNumber; i++ {
-					fmt.Println(g.generateName())
+					fmt.Println(g.GenerateName())
 				}
 				return nil
 			},
