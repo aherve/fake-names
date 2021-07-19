@@ -8,6 +8,6 @@ RUN go build
 FROM alpine:latest
 RUN mkdir /app
 WORKDIR /app
-COPY --from=builder  /app/communes /app/names.csv .
+COPY --from=builder  /app/fake-names .
 
-ENTRYPOINT ["./communes"]
+ENTRYPOINT ["./fake-names"]

@@ -21,7 +21,7 @@ func main() {
 	var filename string
 
 	app := cli.NewApp()
-	app.Name = "Communes"
+	app.Name = "Fake-names"
 	app.Usage = "Generate fake french town names"
 	app.Description = "Read a list of names, and generate fake new ones that resemble the existing names"
 	app.Commands = []cli.Command{
