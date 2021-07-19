@@ -34,7 +34,7 @@ func main() {
 					Name:        "input, i",
 					Usage:       "provide an input csv of names to build the graph with",
 					Destination: &filename,
-					Value:       "./names.csv",
+					Value:       "",
 				},
 				cli.IntFlag{
 					Name:        "number, n",
@@ -44,7 +44,12 @@ func main() {
 				},
 			},
 			Action: func(c *cli.Context) error {
-				names := readNames(filename)
+				var names []string
+				if filename != "" {
+					names = readNames(filename)
+				} else {
+					names = frenchTownNames
+				}
 				g := initializeGraph(names)
 				for i := 0; i < genNumber; i++ {
 					fmt.Println(g.generateName())
