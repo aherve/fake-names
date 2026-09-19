@@ -4,22 +4,19 @@ import (
 	"encoding/csv"
 	"fake-names/graph"
 	"fmt"
+	"io"
 	"log"
-	"math/rand"
 	"os"
-	"time"
 
 	"github.com/urfave/cli"
 )
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
 
 func main() {
 
 	var genNumber int
 	var filename string
+	var col int
+	var delimiterStr string
 
 	app := cli.NewApp()
 	app.Name = "Fake-names"
@@ -35,7 +32,7 @@ func main() {
 					Name:        "input, i",
 					Usage:       "provide an input csv of names to build the graph with",
 					Destination: &filename,
-					Value:       "",
+					Value:       "names.csv",
 				},
 				cli.IntFlag{
 					Name:        "number, n",
@@ -43,13 +40,25 @@ func main() {
 					Destination: &genNumber,
 					Value:       10,
 				},
+				cli.IntFlag{
+					Name:        "col, c",
+					Usage:       "Column of interest in CSV",
+					Destination: &col,
+					Value:       0,
+				},
+				cli.StringFlag{
+					Name:        "delimiter, d",
+					Usage:       "custom CSV comma",
+					Destination: &delimiterStr,
+					Value:       ",",
+				},
 			},
 			Action: func(c *cli.Context) error {
 				var names []string
 				if filename != "" {
-					names = readNames(filename)
+					names = readNames(filename, col, []rune(delimiterStr)[0])
 				} else {
-					names = frenchTownNames
+					log.Fatalf("Please provide a filename to build a graph")
 				}
 				g := graph.InitializeGraph(names)
 				for i := 0; i < genNumber; i++ {
@@ -65,20 +74,29 @@ func main() {
 	}
 }
 
-func readNames(csvName string) []string {
+func readNames(csvName string, col int, delimiter rune) []string {
 	f, err := os.Open(csvName)
 	if err != nil {
 		log.Fatal(err)
 	}
 	r := csv.NewReader(f)
-	records, err := r.ReadAll()
-	if err != nil {
-		log.Fatal(err)
+	r.Comma = delimiter
+
+	names := []string{}
+
+	for {
+		line, err := r.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		if line == nil {
+			break
+		}
+		names = append(names, line[col])
 	}
 
-	names := make([]string, len(records), len(records))
-	for i := 1; i < len(records); i++ {
-		names[i] = records[i][0]
-	}
 	return names
 }

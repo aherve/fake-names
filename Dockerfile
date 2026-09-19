@@ -1,4 +1,4 @@
-FROM golang:rc-alpine AS builder
+FROM golang:tip-alpine3.24 AS builder
 RUN mkdir /app
 WORKDIR /app
 
@@ -9,5 +9,6 @@ FROM alpine:latest
 RUN mkdir /app
 WORKDIR /app
 COPY --from=builder  /app/fake-names .
+COPY --from=builder  /app/names.csv .
 
 ENTRYPOINT ["./fake-names"]
